@@ -120,21 +120,30 @@ int main(int argc, char* argv[]){
 		u32 pdlist_addr = entries[i].mio0_mesh_start + (entries[i].unk3 & 0x00FFFFFF);
 		void* pdlist = &rom[pdlist_addr];
 
-		int decoded_f3d_size;
-		int decoded_mesh_size;
+		int f3d_bin_size;
+		int f3d_mio0_size;
+		int mesh_bin_size;
+		int mesh_mio0_size;
 		u32 raw_unk_size = entries[i].unk_end - entries[i].unk_start;
 		u32 pdlist_size = entries[i].mio0_mesh_end - pdlist_addr;
 
-		void* decoded_f3d  = mio0decode(mio0_block_f3d, &decoded_f3d_size);
-		void* decoded_mesh = mio0decode(mio0_block_mesh, &decoded_mesh_size);
+		void* decoded_f3d  = mio0decode(mio0_block_f3d, &f3d_bin_size, &f3d_mio0_size);
+		void* decoded_mesh = mio0decode(mio0_block_mesh, &mesh_bin_size, &mesh_mio0_size);
 
+		// write out MIO0 data
+		sprintf(output_filename_f3d,  "%s/%02d_%s_SEG06.mio0",  output_directory, i, levelnames[i]);
+		sprintf(output_filename_mesh, "%s/%02d_%s_SEG04.mio0", output_directory, i, levelnames[i]);
+		writefile(output_filename_f3d,  mio0_block_f3d,  f3d_mio0_size);
+		writefile(output_filename_mesh, mio0_block_mesh, mesh_mio0_size);
+
+		// write out binary data
 		sprintf(output_filename_f3d,  "%s/%02d_%s_SEG06.bin",  output_directory, i, levelnames[i]);
 		sprintf(output_filename_mesh, "%s/%02d_%s_SEG04.bin", output_directory, i, levelnames[i]);
 		sprintf(output_filename_unk,  "%s/%02d_%s_REFS.bin",  output_directory, i, levelnames[i]);
 		sprintf(output_filename_pdlist, "%s/%02d_%s_SEG07.bin", output_directory, i, levelnames[i]);
 
-		writefile(output_filename_f3d,  decoded_f3d,  decoded_f3d_size);
-		writefile(output_filename_mesh, decoded_mesh, decoded_mesh_size);
+		writefile(output_filename_f3d,  decoded_f3d,  f3d_bin_size);
+		writefile(output_filename_mesh, decoded_mesh, mesh_bin_size);
 		writefile(output_filename_unk,  block_unk, raw_unk_size);
 		writefile(output_filename_pdlist, pdlist, pdlist_size);
 
@@ -179,7 +188,7 @@ int main(int argc, char* argv[]){
 		if (0 == memcmp(rom + i, MIO0_MAGIC, sizeof(MIO0_MAGIC))) {
 			sprintf(output_filename, "%s/mio0/%08X.bin", output_directory, i);
 			int decoded_size;
-			void* decoded_data = mio0decode(rom + i, &decoded_size);
+			void* decoded_data = mio0decode(rom + i, &decoded_size, NULL);
 			writefile(output_filename, decoded_data, decoded_size);
 			free(decoded_data);
 		}
