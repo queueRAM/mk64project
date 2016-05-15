@@ -16,6 +16,12 @@ typedef long long           s64;
 
 #define COUNT(arr) (sizeof(arr) / sizeof(arr[0]))
 
+// Windows compatibility
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  #include <direct.h>
+  #define mkdir(DIR_, PERM_) _mkdir(DIR_)
+#endif
+
 // file manipulation
 
 void* loadfile(char* filename, int* ret_size);

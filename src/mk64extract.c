@@ -96,7 +96,7 @@ int main(int argc, char* argv[]){
 	char* rom;
 	u16 m64count;
 	int romsize;
-	unsigned i;
+	unsigned i, start;
 
 	if (argc < 3) {
 		fprintf(stderr, "Usage: mk64extract <ROM_PATH> <OUTPUT_DIR>\n");
@@ -173,13 +173,13 @@ int main(int argc, char* argv[]){
 	m64count = BE16(&rom[0xBC5F62]);
 	m64entries = malloc(m64count * sizeof(*m64entries));
 	loadM64Entries(&rom[0xBC5F64], m64entries, m64count);
-	for(int i = 0; i < m64count; i++){
+	for(i = 0; i < m64count; i++){
 		sprintf(output_filename, "%s/TUNE%02d.m64", output_directory, i);
 		printf("%s %08X\n", output_filename, m64entries[i].offset);
 		writefile(output_filename, &rom[0xBC5F60] + m64entries[i].offset, m64entries[i].size);
 	}
 
-	// full mio0 dump:
+	// full MIO0 dump
 	printf("Full MIO0 dump...\n");
 	sprintf(output_filename, "%s/mio0", output_directory);
 	mkdir(output_filename, 0700);
@@ -193,5 +193,61 @@ int main(int argc, char* argv[]){
 			free(decoded_data);
 		}
 	}
+	// full TKMK00 dump
+	printf("Full TKMK00 dump...\n");
+	sprintf(output_filename, "%s/tkmk00", output_directory);
+	mkdir(output_filename, 0700);
+	u8 TKMK00_MAGIC[] = {'T', 'K', 'M', 'K', '0', '0'};
+	start = 0;
+	for(i = 0; i < (unsigned)romsize - 6; i += 16){
+		if (0 == memcmp(rom + i, TKMK00_MAGIC, sizeof(TKMK00_MAGIC))) {
+			if (start != 0) {
+				sprintf(output_filename, "%s/tkmk00/%08X.tkmk00", output_directory, start);
+				void* tkmk_data = rom + start;
+				writefile(output_filename, tkmk_data, i - start);
+			}
+			start = i;
+		} else {
+			// output the last one when we hit an MIO0
+			if (start > 0) {
+				if (0 == memcmp(rom + i, MIO0_MAGIC, sizeof(MIO0_MAGIC))) {
+					sprintf(output_filename, "%s/tkmk00/%08X.tkmk00", output_directory, start);
+					void* tkmk_data = rom + start;
+					writefile(output_filename, tkmk_data, i - start);
+					break;
+				}
+			}
+		}
+	}
+	// dump texture table
+#ifdef DUMP_TKMK00_TABLE
+	int last = 0;
+	for(i = 0x12AAE0; i < 0x1311E8; i += 0x4){
+		unsigned seg_addr = BE32(&rom[i+4]);
+		unsigned width, height;
+		if (((seg_addr & 0xFF000000) == 0x0B000000) || (last && (seg_addr == 0x0))) {
+			if (!last) {
+				printf("origin 0x%06X\n", i);
+			}
+			printf("TKMK_TEXTURE(");
+			printf("%d", BE16(&rom[i]));
+			width = BE16(&rom[i+0x8]);
+			height = BE16(&rom[i+0xA]);
+			if (seg_addr == 0x0) {
+				printf(",    0x%08X", seg_addr);
+			} else {
+				printf(", tkmk00.%06X", 0x7FA3C0 + (seg_addr & 0x00FFFFFF));
+			}
+			printf(", %3d, %3d", width, height);
+			printf(", %3d, %3d", BE16(&rom[i+0xC]), BE16(&rom[i+0xE]));
+			printf(", 0x%04X, 0x%04X", BE16(&rom[i+0x10]), BE16(&rom[i+0x12]));
+			printf(")\n");
+			last = 1;
+			i += 0x10;
+		} else {
+			last = 0;
+		}
+	}
+#endif // DUMP_TKMK00_TABLE
 	return EXIT_SUCCESS;
 }
