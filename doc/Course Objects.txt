@@ -1,0 +1,407 @@
+MK64 Active Course Objects
+by queueRAM
+2016
+______________________________________________________
+
+Simple object bank at 8015F9B8-80162578 (0x64 objects, each 0x70 bytes long)
+ - shells
+ - bananas
+ - item boxes
+ - trees, cacti, shrubs
+ - piranha plants
+ - falling rocks
+ - spinning signs
+ - train, railroad crossing
+
+ Complex object bank at 80165C18-80183D57 (0x226 objects, each 0xE0 bytes long)
+ - hot air balloon
+ - shell fire trails
+ - whomps
+ - ??
+
+
+// Green shell info
+// initialize velocity stored at 802B1430
+// 11A9F8 802B13E8 3C014100:  lui   $at, 0x4100
+// initialized to {0.0, 0.0, 8.0}
+//
+// continually updated 802B3870
+
+// triple shell update (green or red): UpdateTripleShell/802B0E98(a0 = *obj, a1 = 7 (green), 8 (red))
+
+typedef struct {
+   float X;
+   float Y;
+   float Z;
+} vec3f;
+
+typedef struct {
+   i16 type;     // 00: used in switch at 802A3568
+   i16 flags;    // 02: non-zero if used
+   i16 i16_04;   // 04: TODO
+   i16 i16_06;   // 06: TODO
+   i16 i16_08;   // 08: TODO
+   i16 i16_0A;   // 0A: TODO
+   // 0C-0F
+   i16 rotX;     // 10: rotation about X axis (e.g., rotating item boxes)
+   i16 rotY;     // 12: rotation about Y (vertical) axis (e.g., Mario Raceway spinning signs)
+   i16 rotZ;     // 14: rotation about Z axis (e.g., rotating item boxes)
+   // 16-23
+   float poxX;   // 18: X position?
+   float posY;   // 1C: Y position
+   float posZ;   // 20: Z position?
+   i16 i16_24;   // 24: TODO
+   i16 i16_26;   // 26: TODO
+   i16 i16_28;   // 28: TODO
+   i16 i16_2A;   // 2A: TODO
+   // ?-6F
+} SimpleObject;
+
+#define SIMPLE_OBJECT_COUNT 100 // 0x64
+SimpleObject simple_objs[SIMPLE_OBJECT_COUNT]; // stored at 8015F9B8-80162578
+
+// Loops through array of objects at 0x8015F9B8 (each 0x70 bytes long)
+void UpdateSimpleObjects(void) // 802A3548
+{
+   int i;
+   for (i = 0; i < SIMPLE_OBJECT_COUNT; i++) {
+      if (simple_objs[i].flags) {
+         switch (simple_objs[i].type) {
+            // jump table at 0x802B9AF4
+            case  5: proc_8029D188(&simple_objs[i]); break; // 802A3590: Choco Mountain (x3) falling rocks?
+            case  7: proc_802B32C4(&simple_objs[i]); break; // 802A35A0: single green shell
+            case  8: proc_802B4218(&simple_objs[i]); break; // 802A35B0: single red shell
+            case 42: proc_802B4218(&simple_objs[i]); break; // 802A35C0: single blue shell
+            case 45: proc_80297D5C(&simple_objs[i]); break; // 802A35D0: DK's (1x)
+            case  6: proc_802B2034(&simple_objs[i]); break; // 802A35E0: single banana
+            case 38: proc_8029816C(&simple_objs[i]); break; // 802A35F0: DK's (1x)
+            case 15: proc_8029817C(&simple_objs[i]); break; // 802A3600: something in Kalimari Desert 2x(1x) engine?
+            case 16: proc_802981CC(&simple_objs[i]); break; // 802A3610: something in Kalimari Desert 2x(1x) caboose?
+            case 17: proc_802981DC(&simple_objs[i]); break; // 802A3620: something in Kalimari Desert 2x(5x) train cars?
+            case 12: proc_802A1600(&simple_objs[i]); break; // 802A3630: item box
+            case 43: proc_802A156C(&simple_objs[i]); break; // 802A3640
+            case 13: proc_802A10F0(&simple_objs[i]); break; // 802A3650: fake item box
+            case 10: proc_802981EC(&simple_objs[i]); break; // 802A3660: Mario/Royal Raceway piranha plants
+            case 14: proc_802B0A28(&simple_objs[i]); break; // 802A3670: bunch of bananas
+            case 21: proc_802B0E98(&simple_objs[i], 7); break; // 802A3680: triple green shell?
+            case 22: proc_802B0E98(&simple_objs[i], 8); break; // 802A3694: triple red shell
+            case 23: proc_8029AB60(&simple_objs[i]); break; // 802A36A8: Mario Raceway spinning signs
+            case 35: proc_8029AAC8(&simple_objs[i]); break; // 802A36B8: Wario Stadium (3x) spinning sign?
+            case 39: proc_8029AAD8(&simple_objs[i]); break; // 802A36C8: something in Kalimari Desert (x4) railroad crossing?
+            
+            // these group of objects shoot vertically when hit by player with active star item
+            case  2: // trees in Mario Raceway (27x)
+            case  3: // trees in Yoshi Valley (13x)
+            case  4: // trees in Royal Raceway (24x)
+            case 19: // trees in Moo Moo Farm (21x)
+            case 25: // trees in Koopa Troopa Beach (12x)
+            case 26: // trees in Luigi Raceway (20x)
+            case 27:
+            case 28: // trees by castle in Royal Raceway? (8x)
+            case 29: // trees in Frappe Snowland (30x)
+            case 30: // cacti in Kalimari Desert (44x)
+            case 31: // cacti in Kalimari Desert (44x)
+            case 32: // cacti in Kalimari Desert (44x)
+            case 33: // shrubs in Bowser's Castle (27x)
+               // this just add 4.0 to obj->0x1C and sets flag if it exceeds 800.0
+               proc_80297D04(&simple_objs[i]); break; // 802A36D8
+
+            case  9: proc_80297BFC(&simple_objs[i]); break; // 802A36E8: Yoshi's Valley egg
+
+            default: break;
+         }
+      }
+   }
+   proc_802A0E44();
+   proc_802B30EC();
+}
+
+// process green shell collision with wall
+// a0: pointer to wall normal vector?
+// a1: unused
+// a2: pointer shell velocity vector (0x24(s0))
+// a3: unused
+void proc_802ABF44(vec3f *wallNorm, float unusedA1, vec3f *shellVel, float unusedA3)
+{
+   float velMagnitude; // 0x24($sp)
+   
+   velMagnitude = sqrtf((shellVel->X * shellVel->X) + (shellVel->Y * shellVel->Y) + (shellVel->Z * shellVel->Z));
+   
+   if (velMagnitude > 4.5f || velMagnitude <= 3.5) {
+      velMagnitude = 4.0f;
+   }
+
+   float dotProduct = (wallNorm->Z * shellVel->Z) + (wallNorm->X * shellVel->X) + (wallNorm->Y * shellVel->Y);
+   float dotX = wallNorm->X * dotProduct;
+   float dotY = wallNorm->Y * dotProduct;
+   float dotZ = wallNorm->Z * dotProduct;
+   float dX = (shellVel->X - dotX) - dotX;
+   float dY = (shellVel->Y - dotY) - dotY;
+   float dZ = (shellVel->Z - dotZ) - dotZ;
+
+   float normalize = (1.0f / sqrtf(dX * dX + dY * dY + dZ * dZ));
+   shellVel->X = dX * normalize * velMagnitude;
+   shellVel->Y = dY * normalize * velMagnitude;
+   shellVel->Z = dZ * normalize * velMagnitude;
+}
+
+
+// Call Tree for green shell flame trail:
+// proc_8000142C
+//   proc_8028F474
+//     proc_800097E0
+//       proc_8000EF20
+//         proc_80076D70(a0, a1, a2)
+//           proc_80072044(0x8018C870, 0x80183E6C, 0x40)
+//           proc_80076C9C(v0, a0, a2)
+//             proc_800723A4(a0, (u16)a2)
+//                proc_80072388(a0, 0)
+//             proc_8008B7D4(a0, a1->0x00, a1->0x04, a1->0x08)
+//             proc_8008B8BC(a0, 0, 0, 0)
+//             proc_8008B80C(a0, 0, 0, 0)
+//
+// Update position call tree (writes offsets 04-0C)
+// proc_80059D00
+//   proc_8005A74C
+//     proc_80076F2C
+//       proc_80076ED8
+//         proc_8008BF18
+
+// proc_80076C9C(v0, a0, a2)
+// A1 is pointer to X,Y,Z of shell?
+// read at 802B32EC - isn't used at all?
+// read at 802B388C - just copied
+// read at 802B38AC - only for green shell:
+//   0x18(s0) += 0x24(s0)
+//   0x1C(s0) += 0x28(s0)
+//   0x20(s0) += 0x2C(s0)
+// s0 = 80160C18
+// s0 = 80161078
+
+
+typedef struct {
+   float f32_00; // size (scale) read from *0x800EEB14 (0x3E99999A = 0.3)
+   float f32_04; // current X?, from proc_8008BF18
+   float f32_08; // current Y?, from proc_8008BF18
+   float f32_0C; // current Z?, from proc_8008BF18
+   float f32_10; // base X?
+   float f32_14; // base Y?
+   float f32_18; // base Z?
+   float f32_1C; // start of structure passed through A1 to proc_80042A20
+   float f32_20; //
+   float f32_24; //
+   float f32_28; // delta X used in proc_80050E34 (04 = 10 + 28)
+   float f32_2C; // delta Y used in proc_80050E34 (08 = 14 + 2C)
+   float f32_30; // delta Z used in proc_80050E34 (0C = 18 + 30)
+   float f32_34;
+   float f32_38; // proc_80054E10
+   float f32_3C; // proc_80054E10, proc_80074924
+   float f32_40; // proc_80054E10
+   float f32_44; // proc_80054E10, proc_8004A6EC, proc_80055CCC, proc_800568A0
+   i32 i32_48; // proc_80073E18
+   i32 i32_4C; // init to -1 in proc_8006EE7C, used in proc_8007375C
+   u32 u32_50; // proc_8007278C
+   u32 u32_54;
+   u32 u32_58;
+   u32 u32_5C;
+   i32 i32_60; // init to -0x2128 in proc_8006EE7C
+   i32 i32_64; // init to  -0x128 in proc_8006EE7C
+   i32 i32_68; // init to -0x2128 in proc_8006EE7C
+   i32 i32_6C; // init to  -0x128 in proc_8006EE7C
+   u32 u32_70; // proc_80055164
+   u32 u32_74; // proc_800518F8, proc_800519D4, proc_80055164
+   // 78
+   // 7C
+   // 80
+   i16 i16_84; // proc_80053D74, proc_80054AFC, proc_80074924
+   i16 i16_86; // proc_80053D74, proc_80054AFC, proc_80074924
+   i16 i16_88; // proc_80053D74, proc_80054AFC, proc_80074924
+   i16 i16_8A; // proc_80053D74, proc_80074924
+   i16 i16_8C; // proc_80053D74, proc_80074924
+   i16 i16_8E; // proc_80053D74, proc_80074924
+   i16 i16_90; // proc_80053D74, proc_80074924
+   i16 i16_92; // proc_800528EC, proc_80074924
+   u16 u16_94; // proc_80085878, proc_80088364, proc_8008B284, proc_8008B620, proc_8008B6A4
+   i16 i16_96; // proc_80088364, proc_8008B284, proc_8008B620, proc_8008B6A4
+   u16 u16_98; // proc_8007AC9C, proc_8008B478, proc_8008B620, proc_8008B6A4
+   // 9A
+   i16 i16_9C; // casts f32_04 to u16 in proc_8008BFC0, read in proc_80051ABC, proc_80051C60
+   i16 i16_9E; // casts f32_08 to u16 in proc_8008BFC0, read in proc_80051ABC, proc_80051C60
+   i16 i16_A0; // opacity? starts at 0xFF and decays to 0x00
+   i16 i16_A2; // proc_80054324, proc_80055164
+   i16 i16_A4;
+   i16 i16_A6; // proc_80074E28, proc_80074EE8, proc_80075CA8
+   // i16? A8
+   i16 i16_AA; // proc_8007401C
+   i16 i16_AC; // proc_800738A8, proc_80073A10
+   i16 i16_AE; // proc_8008BFFC, proc_80074D94
+   i16 i16_B0; // proc_8007FB48, proc_8007FB48, proc_80087060
+   u16 u16_B2; // start of structure passed through A1 to proc_800484BC
+   u16 u16_B4;
+   u16 u16_B6;
+   u16 u16_B8; // start of structure passed through A1 to proc_80042E00
+   u16 u16_BA;
+   u16 u16_BC;
+   u16 u16_BE; // start of structure passed through A1 to proc_80042E00
+   u16 u16_C0; // proc_80055CCC, proc_80070250
+   u16 u16_C2; // proc_80055CCC, proc_8005A14C
+   // C4
+   // C8
+   u8  u08_CA; // is used flag?
+   u8  u08_CB; // proc_8007278C, proc_80072B48
+   i8  i08_CC; // proc_80072C00
+   i8  i08_CD; // proc_8007401C
+   i8  i08_CE; // proc_8007401C
+   u8  u08_CF;
+   i8  i08_D0; // proc_800738A8, proc_80073A10
+   i8  i08_D1; // proc_8007CC00, proc_8007FB48
+   i8  i08_D2; // proc_800557B4, proc_800747F0
+   i8  i08_D3; // proc_80073404, proc_8007466C, proc_800747F0
+   i8  i08_D4; // proc_80072C00
+   u8  u08_D5; // proc_800750D8, proc_80075698
+   u8  u08_D6; // proc_80073600, proc_80073654
+   u8  u08_D7; // proc_800724F8
+   u8  u08_D8; // proc_800557B4, proc_800723A4
+   u8  u08_D9; // proc_800518F8, proc_800519D4
+   u8  u08_DA; // proc_800518F8, proc_800519D4
+   u8  u08_DB; // proc_80073FAC
+   u8  u08_DC; // proc_8007381C
+   u8  u08_DD; // proc_8008275C, proc_800850B0
+   u8  u08_DE; // proc_8008BFFC
+   u8  i08_DF; // proc_80053870
+} CourseComplexObj;
+
+// 0x80165C18 = MHS 0x10185C18
+
+#define COURSE_OBJ_COUNT 550 // 0x226
+CourseComplexObj course_objs[COURSE_OBJ_COUNT]; // stored at 0x80165C18
+int course_obj_last; // stored at 0x80183D5C
+
+// find next unused index starting at last
+int proc_80071F00(int *idx)
+{
+   int i;
+   int obj_idx = course_obj_last;
+
+   for (i = 0; i != COURSE_OBJ_COUNT; i++) {
+      obj_idx += 1;
+      if (obj_idx == COURSE_OBJ_COUNT) {
+         obj_idx = 0;
+      }
+      if (course_objs[obj_idx].u08_CA == 0) {
+         break;
+      }
+   }
+   
+   course_objs[obj_idx].u08_CA = 1;
+   *idx = obj_idx;
+   course_obj_last = obj_idx;
+   return obj_idx;
+}
+
+int proc_80072044(a0, u32 *a1, u32 a2)
+{
+   int sp_20;
+   v0 = *a1;
+   v1 = 0;
+   a3 = -1;
+   if (v0 >= a2) {
+      *a1 = 0;
+      v0 = 0;
+   }
+   a0 = a0 + v0 * 4;
+   if (a2 > 0) {
+.Lproc_80072044_38:
+      t7 = *a0;
+      t0 = v0 + 1;
+      v0 = t0;
+      
+      if (a3 == t7) {
+         v0 = proc_80071F00(a0);
+         t8 = *a1;
+         t9 = t8 + 1;
+         *a1 = t9;
+         sp_20 = v0;
+      } else {
+.Lproc_80072044_7C:
+         *a1 = t0;
+         if (t0 >= a2) {
+            *a1 = 0;
+            v0 = 0;
+         }
+         v1 += 1;
+         v1 = v0 * 4;
+         a0 = t1 + s0;
+         if (v1 != a2) {
+            // TODO: loop
+            goto .Lproc_80072044_38;
+         }
+      }
+.Lproc_80072044_9C:
+   }
+   a0 = sp_20;
+   if (v1 == a2) {
+      a0 = -1;
+   }
+   v0 = a0;
+}
+
+void proc_80072388(int idx, u8 a1)
+{
+   course_objs[idx].u08_CB = a1;
+}
+
+void? proc_80076D70(a0, a1, a2)
+{
+   v0 = proc_80072044(0x8018C870, 0x80183E6C, 0x40);
+   if (v0 != -1) {
+      proc_80076C9C(v0, a0, a2)
+   }
+}
+
+void proc_800723A4(int idx, u8 a1)
+{
+   course_objs[idx].u32_54 = 0;
+   course_objs[idx].u32_58 = 0;
+   course_objs[idx].u32_5C = 0;
+   course_objs[idx].u08_CD = 0;
+   course_objs[idx].u08_CF = 0;
+   proc_80072388(idx, 0);
+   course_objs[idx].u16_A6 = 1;
+   course_objs[idx].u08_D8 = a1;
+}
+
+void proc_80076C9C(int idx, u32 a1[], a2)
+{
+   proc_800723A4(idx, (u8)a2);
+   course_objs[idx].u08_D5 = 0xA;
+   course_objs[idx].u32_64 = 0x0D02BC58;
+   course_objs[idx].u32_6C = 0x0D02BC58;
+   course_objs[idx].f32_00 = *0x800EEB14;
+   proc_8008B7D4(idx, a1[0], a1[1], a1[2]);
+   course_objs[idx].u16_A4 = 0xFF;
+   course_objs[idx].f32_34 = 0.0f;
+   proc_8008B8BC(idx, 0, 0, 0);
+   proc_8008B80C(idx, 0, 0, 0);
+}
+
+void proc_8008B7D4(int idx, float a1, float a2, float a3)
+{
+   course_objs[idx].f32_10 = a1;
+   course_objs[idx].f32_14 = a2;
+   course_objs[idx].f32_18 = a3;
+}
+
+void proc_8008B80C(int idx, float a1, float a2, float a3)
+{
+   course_objs[idx].f32_28 = a1;
+   course_objs[idx].f32_2C = a2;
+   course_objs[idx].f32_30 = a3;
+}
+
+void proc_8008B8BC(int idx, u16 a1, u16 a2, u16 a3)
+{
+   course_objs[idx].u16_B2 = a1;
+   course_objs[idx].u16_B4 = a2;
+   course_objs[idx].u16_B6 = a3;
+}
