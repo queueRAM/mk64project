@@ -3,6 +3,7 @@
 ################ Target Executable and Sources ###############
 
 CHARACTER_TARGET = mk64.characters.z64
+KART_TARGET = mk64.karts.z64
 TKMK00_TARGET = mk64.tkmk00.z64
 
 MIO0_DIR = extract/mio0
@@ -146,6 +147,329 @@ MIO0_FILES = \
    0079EEAC.mio0 \
    007A01F4.mio0
 
+KART_MIO0_FILES = \
+   001E01F0.mio0 \
+   001E0680.mio0 \
+   001E0B18.mio0 \
+   001E0FB4.mio0 \
+   001E1460.mio0 \
+   001E1918.mio0 \
+   001E1DD4.mio0 \
+   001E22B0.mio0 \
+   001E27A8.mio0 \
+   001E2CC4.mio0 \
+   001E31FC.mio0 \
+   001E372C.mio0 \
+   001E3C74.mio0 \
+   001E41C4.mio0 \
+   001E472C.mio0 \
+   001E4CA0.mio0 \
+   001E5228.mio0 \
+   001E57A0.mio0 \
+   001E5D28.mio0 \
+   001E62B4.mio0 \
+   001E6858.mio0 \
+   001E6DF8.mio0 \
+   001E7288.mio0 \
+   001E7740.mio0 \
+   001E7BD8.mio0 \
+   001E80A4.mio0 \
+   001E857C.mio0 \
+   001E8A50.mio0 \
+   001E8F50.mio0 \
+   001E9458.mio0 \
+   001E9988.mio0 \
+   001E9EC8.mio0 \
+   001EA420.mio0 \
+   001EA984.mio0 \
+   001EAED8.mio0 \
+   001EB458.mio0 \
+   001EB9C8.mio0 \
+   001EBF58.mio0 \
+   001EC4E4.mio0 \
+   001ECA6C.mio0 \
+   001ECFEC.mio0 \
+   001ED574.mio0 \
+   001EDB10.mio0 \
+   001EDFD0.mio0 \
+   001EE494.mio0 \
+   001EE968.mio0 \
+   001EEE40.mio0 \
+   001EF33C.mio0 \
+   001EF85C.mio0 \
+   001EFD80.mio0 \
+   001F02A8.mio0 \
+   001F07EC.mio0 \
+   001F0D3C.mio0 \
+   001F12AC.mio0 \
+   001F1814.mio0 \
+   001F1D90.mio0 \
+   001F231C.mio0 \
+   001F289C.mio0 \
+   001F2E18.mio0 \
+   001F33A8.mio0 \
+   001F394C.mio0 \
+   001F3F00.mio0 \
+   001F44AC.mio0 \
+   001F4A5C.mio0 \
+   001F4F1C.mio0 \
+   001F53F4.mio0 \
+   001F58D4.mio0 \
+   001F5DAC.mio0 \
+   001F62A8.mio0 \
+   001F67BC.mio0 \
+   001F6CE0.mio0 \
+   001F7228.mio0 \
+   001F7768.mio0 \
+   001F7CC4.mio0 \
+   001F8238.mio0 \
+   001F8794.mio0 \
+   001F8D10.mio0 \
+   001F9284.mio0 \
+   001F9810.mio0 \
+   001F9DB0.mio0 \
+   001FA360.mio0 \
+   001FA914.mio0 \
+   001FAED8.mio0 \
+   001FB48C.mio0 \
+   001FBA40.mio0 \
+   001FBEF0.mio0 \
+   001FC3D4.mio0 \
+   001FC8C8.mio0 \
+   001FCDBC.mio0 \
+   001FD2C4.mio0 \
+   001FD7EC.mio0 \
+   001FDD30.mio0 \
+   001FE290.mio0 \
+   001FE7FC.mio0 \
+   001FED70.mio0 \
+   001FF2EC.mio0 \
+   001FF86C.mio0 \
+   001FFDF0.mio0 \
+   00200378.mio0 \
+   0020091C.mio0 \
+   00200EC4.mio0 \
+   0020146C.mio0 \
+   00201A14.mio0 \
+   00201FD4.mio0 \
+   00202598.mio0 \
+   00202B50.mio0 \
+   00203030.mio0 \
+   00203518.mio0 \
+   00203A0C.mio0 \
+   00203F1C.mio0 \
+   00204424.mio0 \
+   00204970.mio0 \
+   00204EC0.mio0 \
+   00205420.mio0 \
+   00205990.mio0 \
+   00205F00.mio0 \
+   00206480.mio0 \
+   00206A0C.mio0 \
+   00206FA4.mio0 \
+   00207538.mio0 \
+   00207AFC.mio0 \
+   002080B0.mio0 \
+   00208678.mio0 \
+   00208C2C.mio0 \
+   0020920C.mio0 \
+   002097D4.mio0 \
+   00209DA4.mio0 \
+   0020A290.mio0 \
+   0020A790.mio0 \
+   0020ACAC.mio0 \
+   0020B1BC.mio0 \
+   0020B6EC.mio0 \
+   0020BC28.mio0 \
+   0020C174.mio0 \
+   0020C6C4.mio0 \
+   0020CC2C.mio0 \
+   0020D190.mio0 \
+   0020D720.mio0 \
+   0020DCB8.mio0 \
+   0020E24C.mio0 \
+   0020E7E8.mio0 \
+   0020ED98.mio0 \
+   0020F360.mio0 \
+   0020F928.mio0 \
+   0020FEE0.mio0 \
+   002104AC.mio0 \
+   00210A74.mio0 \
+   00211054.mio0 \
+   00211570.mio0 \
+   00211A8C.mio0 \
+   00211FB0.mio0 \
+   002124EC.mio0 \
+   00212A38.mio0 \
+   00212F70.mio0 \
+   002134D8.mio0 \
+   00213A28.mio0 \
+   00213FB4.mio0 \
+   00214540.mio0 \
+   00214AEC.mio0 \
+   0021509C.mio0 \
+   00215650.mio0 \
+   00215BF4.mio0 \
+   002161A4.mio0 \
+   00216774.mio0 \
+   00216D38.mio0 \
+   00217304.mio0 \
+   002178F4.mio0 \
+   00217ECC.mio0 \
+   002184B8.mio0 \
+   002189D0.mio0 \
+   00218EFC.mio0 \
+   00219450.mio0 \
+   00219980.mio0 \
+   00219EC4.mio0 \
+   0021A420.mio0 \
+   0021A99C.mio0 \
+   0021AF10.mio0 \
+   0021B490.mio0 \
+   0021BA24.mio0 \
+   0021BFCC.mio0 \
+   0021C578.mio0 \
+   0021CB30.mio0 \
+   0021D0E8.mio0 \
+   0021D6B0.mio0 \
+   0021DC8C.mio0 \
+   0021E270.mio0 \
+   0021E850.mio0 \
+   0021EE40.mio0 \
+   0021F41C.mio0 \
+   0021FA14.mio0 \
+   0021FEB4.mio0 \
+   00220388.mio0 \
+   00220898.mio0 \
+   00220DC8.mio0 \
+   00221328.mio0 \
+   002218A8.mio0 \
+   00221E20.mio0 \
+   002223D4.mio0 \
+   00222984.mio0 \
+   00222F70.mio0 \
+   0022356C.mio0 \
+   00223B88.mio0 \
+   002241CC.mio0 \
+   00224818.mio0 \
+   00224E74.mio0 \
+   002254C8.mio0 \
+   00225AF0.mio0 \
+   00226124.mio0 \
+   00226740.mio0 \
+   00226D2C.mio0 \
+   0022720C.mio0 \
+   00227734.mio0 \
+   00227C74.mio0 \
+   002281DC.mio0 \
+   00228748.mio0 \
+   00228CE8.mio0 \
+   00229298.mio0 \
+   00229860.mio0 \
+   00229E28.mio0 \
+   0022A410.mio0 \
+   0022A9E0.mio0 \
+   0022AFC8.mio0 \
+   0022B5E0.mio0 \
+   0022BBF8.mio0 \
+   0022C210.mio0 \
+   0022C818.mio0 \
+   0022CE2C.mio0 \
+   0022D410.mio0 \
+   0022D9E8.mio0 \
+   0022DF84.mio0 \
+   0022E460.mio0 \
+   0022E990.mio0 \
+   0022EEF0.mio0 \
+   0022F46C.mio0 \
+   0022F9F4.mio0 \
+   0022FF90.mio0 \
+   00230558.mio0 \
+   00230B38.mio0 \
+   0023110C.mio0 \
+   002316F0.mio0 \
+   00231CB8.mio0 \
+   00232298.mio0 \
+   00232874.mio0 \
+   00232E70.mio0 \
+   00233460.mio0 \
+   00233A30.mio0 \
+   00234014.mio0 \
+   002345C0.mio0 \
+   00234B58.mio0 \
+   002350A0.mio0 \
+   002355A0.mio0 \
+   00235ADC.mio0 \
+   00236038.mio0 \
+   002365CC.mio0 \
+   00236B5C.mio0 \
+   00237118.mio0 \
+   002376FC.mio0 \
+   00237CE0.mio0 \
+   002382D8.mio0 \
+   002388A0.mio0 \
+   00238E68.mio0 \
+   00239440.mio0 \
+   00239A20.mio0 \
+   00239FF8.mio0 \
+   0023A59C.mio0 \
+   0023AB38.mio0 \
+   0023B0CC.mio0 \
+   0023B644.mio0 \
+   0023BB9C.mio0 \
+   0023C0AC.mio0 \
+   0023C5FC.mio0 \
+   0023CB50.mio0 \
+   0023D0CC.mio0 \
+   0023D658.mio0 \
+   0023DC0C.mio0 \
+   0023E1D8.mio0 \
+   0023E7C8.mio0 \
+   0023EDB0.mio0 \
+   0023F37C.mio0 \
+   0023F960.mio0 \
+   0023FF14.mio0 \
+   002404E0.mio0 \
+   00240A88.mio0 \
+   00241028.mio0 \
+   002415B0.mio0 \
+   00241B30.mio0 \
+   0024207C.mio0 \
+   002425A8.mio0 \
+   00242AB0.mio0 \
+   00242F64.mio0 \
+   00243434.mio0 \
+   002439A0.mio0 \
+   00243F74.mio0 \
+   00244620.mio0 \
+   00244C58.mio0 \
+   00245298.mio0 \
+   00245864.mio0 \
+   00245DEC.mio0 \
+   00246304.mio0 \
+   002468C4.mio0 \
+   00246E8C.mio0 \
+   00247478.mio0 \
+   00247A18.mio0 \
+   00247FB0.mio0 \
+   00248550.mio0 \
+   00248AA0.mio0 \
+   00248F6C.mio0 \
+   00249558.mio0 \
+   00249BFC.mio0 \
+   0024A298.mio0 \
+   0024A8C8.mio0 \
+   0024AEEC.mio0 \
+   0024B4B8.mio0 \
+   0024BA08.mio0 \
+   0024BF18.mio0 \
+   0024C4D8.mio0 \
+   0024CAB0.mio0 \
+   0024D068.mio0 \
+   0024D60C.mio0 \
+   0024DBBC.mio0 \
+   0024E134.mio0
+
 TKMK_FILES = \
    007FA3C0.tkmk00 \
    007FAFC0.tkmk00 \
@@ -212,6 +536,7 @@ TKMK_FILES = \
    00820FC0.tkmk00
 
 MIO0_PATH_FILES = $(addprefix $(MIO0_DIR)/,$(MIO0_FILES))
+KART_MIO0_PATH_FILES = $(addprefix $(MIO0_DIR)/,$(KART_MIO0_FILES))
 TKMK_PATH_FILES = $(addprefix $(TKMK_DIR)/,$(TKMK_FILES))
 ####################### Tool Options #########################
 
@@ -219,6 +544,7 @@ TOOLS_DIR = ./tools
 BASS = $(TOOLS_DIR)/bass
 MIO0TOOL = $(TOOLS_DIR)/mio0
 N64GRAPHICS = $(TOOLS_DIR)/n64graphics
+N64CKSUM = $(TOOLS_DIR)/n64cksum
 
 ASFLAGS = -create
 
@@ -228,16 +554,18 @@ FixPath = $(subst /,\,$1)
 
 default: all
 
-all: $(CHARACTER_TARGET) $(TKMK00_TARGET)
+all: $(CHARACTER_TARGET) $(KART_TARGET) $(TKMK00_TARGET)
 
 $(MIO0_DIR)/%.mio0: $(MIO0_DIR)/%.bin
 	$(MIO0TOOL) $< $@
 
 $(CHARACTER_TARGET): $(MIO0_PATH_FILES)
+$(KART_TARGET): $(KART_MIO0_PATH_FILES)
 $(TKMK00_TARGET): $(TKMK_PATH_FILES)
 
 %.z64: %.asm
 	$(BASS) $(ASFLAGS) -o $@ $<
+	$(N64CKSUM) $@
 
 clean:
 	del /Q $(call FixPath,$(CHARACTER_TARGET) $(MIO0_PATH_FILES))
