@@ -16,7 +16,7 @@ Simple object bank at 8015F9B8-80162578 (0x64 objects, each 0x70 bytes long)
  Complex object bank at 80165C18-80183D57 (0x226 objects, each 0xE0 bytes long)
  - hot air balloon
  - shell fire trails
- - whomps
+ - thwomps
  - ??
 
 
@@ -38,22 +38,44 @@ typedef struct {
 typedef struct {
    i16 type;     // 00: used in switch at 802A3568
    i16 flags;    // 02: non-zero if used
-   i16 i16_04;   // 04: TODO
-   i16 i16_06;   // 06: TODO
+   i16 i16_04;   // 04: 1 = visible, -1 = not visible
+   i16 i16_06;   // 06: TODO some sort of state: 3 = touched by kart?
    i16 i16_08;   // 08: TODO
    i16 i16_0A;   // 0A: TODO
    // 0C-0F
    i16 rotX;     // 10: rotation about X axis (e.g., rotating item boxes)
    i16 rotY;     // 12: rotation about Y (vertical) axis (e.g., Mario Raceway spinning signs)
    i16 rotZ;     // 14: rotation about Z axis (e.g., rotating item boxes)
-   // 16-23
+   // 16-17
    float poxX;   // 18: X position?
    float posY;   // 1C: Y position
    float posZ;   // 20: Z position?
-   i16 i16_24;   // 24: TODO
-   i16 i16_26;   // 26: TODO
-   i16 i16_28;   // 28: TODO
-   i16 i16_2A;   // 2A: TODO
+   union {
+      struct piranha {
+	     i16 i16_24;   // 24: TODO: state in piranha plant?
+         i16 i16_26;   // 26: TODO: state in piranha plant?
+         i16 i16_28;   // 28: TODO: state in piranha plant?
+         i16 i16_2A;   // 2A: TODO
+	  };
+	  struct rocks {
+	     float f32_24; // 24
+		 float f32_28; // 28
+		 float f32_2C; // 2C
+		 // 30,34,38?
+		 float f32_3C; // 3C
+		 float f32_40; // 40
+		 float f32_44; // 44
+		 float f32_48; // 48
+		 float f32_4C; // 4C
+		 float f32_50; // 50
+		 float f32_54; // 54
+		 float f32_58; // 58
+		 float f32_5C; // 5C
+		 float f32_60; // 60
+		 float f32_64; // 64
+		 // 68,6C?
+	  };
+   }
    // ?-6F
 } SimpleObject;
 
@@ -79,7 +101,7 @@ void UpdateSimpleObjects(void) // 802A3548
             case 16: proc_802981CC(&simple_objs[i]); break; // 802A3610: something in Kalimari Desert 2x(1x) caboose?
             case 17: proc_802981DC(&simple_objs[i]); break; // 802A3620: something in Kalimari Desert 2x(5x) train cars?
             case 12: proc_802A1600(&simple_objs[i]); break; // 802A3630: item box
-            case 43: proc_802A156C(&simple_objs[i]); break; // 802A3640
+            case 43: proc_802A156C(&simple_objs[i]); break; // 802A3640: item box under balloon in Luigi Raceway
             case 13: proc_802A10F0(&simple_objs[i]); break; // 802A3650: fake item box
             case 10: proc_802981EC(&simple_objs[i]); break; // 802A3660: Mario/Royal Raceway piranha plants
             case 14: proc_802B0A28(&simple_objs[i]); break; // 802A3670: bunch of bananas
@@ -99,11 +121,11 @@ void UpdateSimpleObjects(void) // 802A3548
             case 27:
             case 28: // trees by castle in Royal Raceway? (8x)
             case 29: // trees in Frappe Snowland (30x)
-            case 30: // cacti in Kalimari Desert (44x)
-            case 31: // cacti in Kalimari Desert (44x)
-            case 32: // cacti in Kalimari Desert (44x)
+            case 30: // cacti in Kalimari Desert (44x of 30, 31, 32)
+            case 31: // cacti in Kalimari Desert
+            case 32: // cacti in Kalimari Desert
             case 33: // shrubs in Bowser's Castle (27x)
-               // this just add 4.0 to obj->0x1C and sets flag if it exceeds 800.0
+               // tests bits 0x800 and 0x400 of obj->i16_02 and add 4.0 to obj->f32_1C and if exceeds 800.0 sets 0x800 flag
                proc_80297D04(&simple_objs[i]); break; // 802A36D8
 
             case  9: proc_80297BFC(&simple_objs[i]); break; // 802A36E8: Yoshi's Valley egg
