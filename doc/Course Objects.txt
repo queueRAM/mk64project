@@ -37,44 +37,53 @@ typedef struct {
 
 typedef struct {
    i16 type;     // 00: used in switch at 802A3568
-   i16 flags;    // 02: non-zero if used
-   i16 i16_04;   // 04: 1 = visible, -1 = not visible
+   i16 flags;    // 02: non-zero if used, 0x800 = gone (tree hit by star)
+   i16 i16_04;   // 04: 1 = visible, -1 = not visible, used as timer in KD RR crossing
    i16 i16_06;   // 06: TODO some sort of state: 3 = touched by kart?
-   i16 i16_08;   // 08: TODO
+   i16 i16_08;   // 08: TODO, also float in proc_8029817C(), proc_802A10F0(), proc_802B0E98()
    i16 i16_0A;   // 0A: TODO
-   // 0C-0F
+   float f32_0C; // 0C: float in fake item box
    i16 rotX;     // 10: rotation about X axis (e.g., rotating item boxes)
    i16 rotY;     // 12: rotation about Y (vertical) axis (e.g., Mario Raceway spinning signs)
    i16 rotZ;     // 14: rotation about Z axis (e.g., rotating item boxes)
    // 16-17
-   float poxX;   // 18: X position?
+   float poxX;   // 18: X position
    float posY;   // 1C: Y position
-   float posZ;   // 20: Z position?
+   float posZ;   // 20: Z position
    union {
+      struct item_box {
+         float f32_24; // 24: TODO
+         float f32_28; // 28: TODO fake item box
+      };
       struct piranha {
-	     i16 i16_24;   // 24: TODO: state in piranha plant?
+         i16 i16_24;   // 24: TODO: state in piranha plant?
          i16 i16_26;   // 26: TODO: state in piranha plant?
          i16 i16_28;   // 28: TODO: state in piranha plant?
          i16 i16_2A;   // 2A: TODO
-	  };
-	  struct rocks {
-	     float f32_24; // 24
-		 float f32_28; // 28
-		 float f32_2C; // 2C
-		 // 30,34,38?
-		 float f32_3C; // 3C
-		 float f32_40; // 40
-		 float f32_44; // 44
-		 float f32_48; // 48
-		 float f32_4C; // 4C
-		 float f32_50; // 50
-		 float f32_54; // 54
-		 float f32_58; // 58
-		 float f32_5C; // 5C
-		 float f32_60; // 60
-		 float f32_64; // 64
-		 // 68,6C?
-	  };
+      };
+      struct triple_shell {
+         float f32_24; // 24: TODO
+         float f32_28; // 28: TODO
+         float f32_2C; // 2C: TODO
+      };
+      struct rocks {
+         float f32_24; // 24
+         float f32_28; // 28
+         float f32_2C; // 2C
+         // 30,34,38?
+         float f32_3C; // 3C
+         float f32_40; // 40
+         float f32_44; // 44
+         float f32_48; // 48
+         float f32_4C; // 4C
+         float f32_50; // 50
+         float f32_54; // 54
+         float f32_58; // 58
+         float f32_5C; // 5C
+         float f32_60; // 60
+         float f32_64; // 64
+         // 68,6C?
+      };
    }
    // ?-6F
 } SimpleObject;
@@ -94,21 +103,21 @@ void UpdateSimpleObjects(void) // 802A3548
             case  7: proc_802B32C4(&simple_objs[i]); break; // 802A35A0: single green shell
             case  8: proc_802B4218(&simple_objs[i]); break; // 802A35B0: single red shell
             case 42: proc_802B4218(&simple_objs[i]); break; // 802A35C0: single blue shell
-            case 45: proc_80297D5C(&simple_objs[i]); break; // 802A35D0: DK's (1x)
+            case 45: proc_80297D5C(&simple_objs[i]); break; // 802A35D0: coconuts thrown in DK's
             case  6: proc_802B2034(&simple_objs[i]); break; // 802A35E0: single banana
-            case 38: proc_8029816C(&simple_objs[i]); break; // 802A35F0: DK's (1x)
+            case 38: proc_8029816C(&simple_objs[i]); break; // 802A35F0: paddle wheel on boat in DK's
             case 15: proc_8029817C(&simple_objs[i]); break; // 802A3600: something in Kalimari Desert 2x(1x) engine?
             case 16: proc_802981CC(&simple_objs[i]); break; // 802A3610: something in Kalimari Desert 2x(1x) caboose?
             case 17: proc_802981DC(&simple_objs[i]); break; // 802A3620: something in Kalimari Desert 2x(5x) train cars?
             case 12: proc_802A1600(&simple_objs[i]); break; // 802A3630: item box
             case 43: proc_802A156C(&simple_objs[i]); break; // 802A3640: item box under balloon in Luigi Raceway
             case 13: proc_802A10F0(&simple_objs[i]); break; // 802A3650: fake item box
-            case 10: proc_802981EC(&simple_objs[i]); break; // 802A3660: Mario/Royal Raceway piranha plants
+            case 10: proc_802981EC(&simple_objs[i]); break; // 802A3660: piranha plant
             case 14: proc_802B0A28(&simple_objs[i]); break; // 802A3670: bunch of bananas
             case 21: proc_802B0E98(&simple_objs[i], 7); break; // 802A3680: triple green shell?
             case 22: proc_802B0E98(&simple_objs[i], 8); break; // 802A3694: triple red shell
             case 23: proc_8029AB60(&simple_objs[i]); break; // 802A36A8: Mario Raceway spinning signs
-            case 35: proc_8029AAC8(&simple_objs[i]); break; // 802A36B8: Wario Stadium (3x) spinning sign?
+            case 35: proc_8029AAC8(&simple_objs[i]); break; // 802A36B8: Wario Stadium (3x) spinning sign
             case 39: proc_8029AAD8(&simple_objs[i]); break; // 802A36C8: something in Kalimari Desert (x4) railroad crossing?
             
             // these group of objects shoot vertically when hit by player with active star item
