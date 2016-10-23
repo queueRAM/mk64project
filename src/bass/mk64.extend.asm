@@ -28,9 +28,9 @@ insert "Mario Kart 64 (U) [!].z64"
 origin 0x122390
 macro COURSE(dl_s, dl_e, vx_s, vx_e, tx_s, tx_e, vx_seg, unk1C, pdl_o, unk24, tx_seg, flag) {
   // 0x00    0x04    0x08    0x0C    0x10    0x14    0x18            0x1C     0x20                      0x24     0x28 
-  dd {dl_s}, {dl_e}, {vx_s}, {vx_e}, {tx_s}, {tx_e}, {vx_seg} << 24, {unk1C}, {vx_seg} << 24 | {pdl_o}, {unk24}, {tx_seg} << 24
+  dw {dl_s}, {dl_e}, {vx_s}, {vx_e}, {tx_s}, {tx_e}, {vx_seg} << 24, {unk1C}, {vx_seg} << 24 | {pdl_o}, {unk24}, {tx_seg} << 24
   // 0x2C    0x2E
-  dw {flag}, 0
+  dh {flag}, 0
 }
 // Inserted new table (first 6 columns differ)
 COURSE(mario_dl_s, mario_dl_e, mario_vx_s, mario_vx_e, mario_tx_s, mario_tx_e, 0x0F, 0x167D, (mario_cd_s - mario_vx_s), 0x6930, 0x09, 0x0) // Mario Raceway

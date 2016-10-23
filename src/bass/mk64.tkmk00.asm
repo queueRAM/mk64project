@@ -24,9 +24,9 @@ macro align(size) {
 // height: height of texture
 // others unknown
 macro MK_TEXTURE(flag, seg_addr, width, height, h0C, h0E, h10, h12) {
-  dw {flag}, 0
-  dd {seg_addr}
-  dw {width}, {height}, {h0C}, {h0E}, {h10}, {h12}
+  dh {flag}, 0
+  dw {seg_addr}
+  dh {width}, {height}, {h0C}, {h0E}, {h10}, {h12}
 }
 
 // insert original ROM
