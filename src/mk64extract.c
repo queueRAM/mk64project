@@ -32,6 +32,16 @@ char const * const levelnames[] = {
 	"BIGDONUT",         // 13
 };
 
+char const * const drivernames[] = {
+	"Mario",
+	"Luigi",
+	"Yoshi",
+	"Toad",
+	"DK",
+	"Wario",
+	"Peach",
+	"Bowser",
+};
 
 typedef struct {
 	u32 mio0_f3d_start; // dlist
@@ -96,7 +106,7 @@ int main(int argc, char* argv[]){
 	char* rom;
 	u16 m64count;
 	int romsize;
-	unsigned i, start;
+	unsigned i, j, start;
 
 	if (argc < 3) {
 		fprintf(stderr, "Usage: mk64extract <ROM_PATH> <OUTPUT_DIR>\n");
@@ -186,10 +196,13 @@ int main(int argc, char* argv[]){
 	u8 MIO0_MAGIC[] = {'M', 'I', 'O', '0'};
 	for(i = 0; i < (unsigned)romsize - 4; i += 4){
 		if (0 == memcmp(rom + i, MIO0_MAGIC, sizeof(MIO0_MAGIC))) {
-			sprintf(output_filename, "%s/mio0/%08X.bin", output_directory, i);
 			int decoded_size;
-			void* decoded_data = mio0decode(rom + i, &decoded_size, NULL);
+			int compressed_size;
+			void* decoded_data = mio0decode(rom + i, &decoded_size, &compressed_size);
+			sprintf(output_filename, "%s/mio0/%08X.bin", output_directory, i);
 			writefile(output_filename, decoded_data, decoded_size);
+			sprintf(output_filename, "%s/mio0/%08X.mio0", output_directory, i);
+			writefile(output_filename, rom + i, compressed_size);
 			free(decoded_data);
 		}
 	}
@@ -249,5 +262,47 @@ int main(int argc, char* argv[]){
 		}
 	}
 #endif // DUMP_TKMK00_TABLE
+
+   // kart palette dump
+#define KART_PALETTE_TABLE 0xE2F40 // ROM offset of kart pallete table
+#define SEG_0F_OFFSET     0x145470 // ROM offset of segment 0F
+   printf("Kart palettes dump...\n");
+   sprintf(output_filename, "%s/palettes", output_directory);
+   mkdir(output_filename, 0700);
+   for(i = 0; i < 8; i++){
+      unsigned seg_addr = BE32(&rom[4*i + KART_PALETTE_TABLE]);
+      unsigned rom_off = (seg_addr & 0x00FFFFFF) + SEG_0F_OFFSET;
+      sprintf(output_filename, "%s/palettes/%08X.bin", output_directory, rom_off);
+      writefile(output_filename, rom + rom_off, 0x180);
+   }
+#define WHEEL_PALETTE_TABLE_1 0xDEA34 // 800DDE34
+#define WHEEL_PALETTE_TABLE_2 0xDEA54 // 800DDE54
+#define ROM_TO_RAM 0x7FFFF400 // offset from ROM to RAM
+   // first table points to another table 0x2A00 offsets
+   for (i = 0; i < 8; i++) {
+      unsigned ram_ptr = BE32(&rom[4*i + WHEEL_PALETTE_TABLE_1]);
+      unsigned rom_off = ram_ptr - ROM_TO_RAM;
+      for (j = 0; j < 9; j++) {
+         unsigned seg_addr = BE32(&rom[4*j + rom_off]);
+         unsigned pal_off = (seg_addr & 0x00FFFFFF) + SEG_0F_OFFSET;
+         sprintf(output_filename, "%s/palettes/%08X.bin", output_directory, pal_off);
+         writefile(output_filename, rom + pal_off, 0x2A00);
+      }
+   }
+   // second table points to another table 0x2800 offsets
+   for (i = 0; i < 8; i++) {
+      unsigned ram_ptr = BE32(&rom[4*i + WHEEL_PALETTE_TABLE_2]);
+      unsigned rom_off = ram_ptr - ROM_TO_RAM;
+      unsigned prev_off = 0x0;
+      for (j = 0; j < 9; j++) {
+         unsigned seg_addr = BE32(&rom[4*j + rom_off]);
+         unsigned pal_off = (seg_addr & 0x00FFFFFF) + SEG_0F_OFFSET;
+         if (pal_off != prev_off) {
+            sprintf(output_filename, "%s/palettes/%08X.bin", output_directory, pal_off);
+            writefile(output_filename, rom + pal_off, 0x2800);
+         }
+         prev_off = pal_off;
+      }
+   }
 	return EXIT_SUCCESS;
 }

@@ -42,3 +42,46 @@ Bowser:
 63E0F8 kart palette
 
 641F70 end of kart texture data, start of course texture data
+
+Kart Palette table at ROM offset 0xE2F40:
+-----------------------------------------
+Idx  Kart    Segmented   ROM
+-----------------------------------------
+00   Mario   0F12D430    2728A0
+01   Luigi   0F09ABFC    1E006C
+02   Yoshi   0F1C4958    309DC8
+03   Toad    0F386858    4CBCC8
+04   D.K.    0F438874    57DCE4
+05   Wario   0F2F5DEC    43B25C
+06   Peach   0F258AC8    39DF38
+07   Bowser  0F4F8C88    63E0F8
+
+Wheel Palettes
+---------------------
+
+00145470: Kart Graphics Bank
+
+800DDE34: Wheel Palette Table 1 - Offsets into kart bank
+Kart#   RAM         ROM
+--------------------------
+00      800DDBF4    0DE7F4
+01      800DDC3C    0DE83C
+02      800DDD14    0DE914
+03      800DDCCC    0DE8CC
+04      800DDD5C    0DE95C
+05      800DDDEC    0DE9EC
+06      800DDDA4    0DE9A4
+07      800DDC84    0DE884
+
+800DDE54: Wheel Palette Table 2 - Offsets into kart bank
+Kart#   RAM         ROM
+--------------------------
+00      800DDC18    0DE818
+01      800DDC60    0DE860
+02      800DDD38    0DE938
+03      800DDCF0    0DE8F0
+04      800DDD80    0DE980
+05      800DDE10    0DEA10
+06      800DDDC8    0DE9C8
+07      800DDCA8    0DE8A8
+
