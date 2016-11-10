@@ -1,0 +1,290 @@
+MIO0 0x132B50 -> RAM 0x8019F940
+
+000000: Finish line banner CI palette (MIO0 696BAC-69811C (8))
+
+004C68: Trees CI palette (MIO0 6913CC-692CC0 (9))
+
+4E38: CI palette for green shells, MIO0 blocks:
+  68EB50
+  68EDA0
+  68EFF0
+  68F248
+  68F4A8
+  68F700
+  68F96C
+  68FBCC
+005038: CI palette for spiny shells, MIO0 blocks:
+  68FE20
+  69004C
+  690284
+  6904C4
+  690708
+  690960
+  690BBC
+  690DF8
+
+005228: F3D colors?
+0052B8-00542F: F3D
+005430-006A5F: F3D data
+
+006A58: 16x16 I4
+006AD8: 32x32 IA8
+
+6ED8-76F7: F3D data??
+76F8-814F: F3D
+
+8150: 100x8 IA8
+8470: 100x8 IA8
+8790: 100x8 IA8?
+
+8AB0-8C77: F3D data?
+8C78-8E97: F3D
+8E98-9957: F3D data?
+
+9958: 64x96 I4 speedometer
+A558: 64x32 I4 speedometer needle
+
+Places: 1P/2P/3P/4P 64x32 CI8
+1P 17458 17258
+2P 17C58 17258
+3P 18458 17258
+4P 18C58 17258
+
+19658: # 1-8, 16x16 CI8 palette 19458
+1A058: # 0-9 8x8 CI8 palette 19E58
+
+1A2D8: IA4 32x32 white box
+
+HUD faces 32x32 CI8
+Idx  Face   Offset  Palette
+0    Mario  1B6D8   1A4D8
+1    Luigi  1BAD8   1A6D8
+2    Peach  1BED8   1A8D8
+3    Toad   1C2D8   1AAD8
+4    Yoshi  1C6D8   1ACD8
+5    D.K.   1CAD8   1AED8
+6    Wario  1CED8   1B0D8
+7    Bowser 1D2D8   1B2D8
+8    Bomb   1D6D8   1B4D8
+9    [?]    1DAD8   1B4D8 <- same palette
+
+HUD Items 40x32 CI8
+Idx  Item            Offset  Palette
+0    Empty           1FED8   1DED8
+1    Banana          203D8   1E0D8
+2    Banana Bunch    208D8   1E2D8
+3    Mushroom        20DD8   1E4D8
+4    Two Mushroom    212D8   1E6D8
+5    Triple Mushroom 217D8   1E8D8
+6    Super Mushroom  21CD8   1EAD8
+7    Spiny Shell     221D8   1ECD8
+8    Boo             226D8   1EED8
+9    Green Shell     22BD8   1F0D8
+A    Triple Green    230D8   1F2D8
+B    Red Shell       235D8   1F4D8
+C    Triple Red      23AD8   1F6D8
+D    Super Star      23FD8   1F8D8
+E    Thunderbolt     244D8   1FAD8
+F    Fake Item Box   249D8   1FCD8
+
+
+24ED8: Lakitu CI8 palettes (textures raw in ROM 6A0AC0-712DBF)
+250D8
+252D8
+254D8
+256D8
+258D8
+25AD8
+25CD8
+
+white/black striped signal lights
+0  260D8  25ED8
+1  26558
+2  269D8
+3  26E58
+4  272D8
+5  27758
+6  27BD8
+7  28058
+8  284D8
+9  28958
+
+28DD8: RGBA16 32x16 green leaf
+291D8: RGBA16 16x16 leaf
+293D8: I8? 8x16
+29458: I8 32x32
+
+bomb textures 32x32
+0  black          29858   2A858
+1  dark yellow    29C58
+2  yellow         2A058
+3  bright yellow  2A458
+
+2AA58: RGBA16 16x16 bomb wheel
+
+2AC58: I8 32x32 particles
+2B058: I8 32x32 particles
+2B458: I8 32x32 particles
+2B858: I8 32x32 particles
+2BC58: I8 32x32 dust cloud
+2C058: I8 32x32 dust cloud
+2C458: I8 32x32 dust cloud
+2C858: I8 32x32 dust cloud
+
+2CC58-end: RGBA16 8x8 little cars
+2CC58
+2CCD8
+2CD58
+2CDD8
+2CE58
+2CED8
+2CF58
+2CFD8
+2D058
+2D0D8
+
+-----------------------------------------------------------
+
+MIO0 145470-619730: kart textures CI8 64x64, palettes in ROM
+
+-----------------------------------------------------------
+
+MIO0 641F70-6A0798: individual textures, RGBA16, IA16, I8, CI8
+
+69F158, 69F390, 69F5E4, 69F9C0: CRASH WHRRRRR POOMP!
+CI8 palette in ROM offset 0E5ED0
+
+-----------------------------------------------------------
+
+MIO0 821D10: trophies and place numbers
+4670-5E6F: (3) RGBA16 32x32 bronze, silver, gold trophies
+6BD0-73CF: (1) RGBA16 32x32 red '1'
+7760-7F5F: (1) RGBA16 32x32 red '2'
+8070-886F: (1) RGBA16 32x32 red '3'
+
+-----------------------------------------------------------
+
+MIO0 825800: gold
+8A48-9248: (1) RGBA16 32x32 gold
+
+-----------------------------------------------------------
+
+MIO0 8284D0: Mario Raceway
+6750: CI8 palette for piranha plants stored in MIO0 blocks:
+  698378
+  69859C
+  6987FC
+  698A40
+  698C60
+  698E38
+  698FF4
+  6991F8
+  699500
+7068-9067: (2) RGBA16 32x64 Mario "GO" sign left and right
+
+-----------------------------------------------------------
+
+MIO0 831DC0: Banshee Boardwalk
+5C80: CI8 palette for boos stored in MIO0 block 712DC0
+
+-----------------------------------------------------------
+
+MIO0 835BA0: Yoshi's Valley
+14908: CI8 palette for porcupine texture at offset 14B08
+
+-----------------------------------------------------------
+
+MIO0 83F740: Frappe
+7320: CI8 palette for trees in MIO0: 
+  69333C, 693790
+
+-----------------------------------------------------------
+
+MIO0 84ABD0: Unknown
+D610: red/green CI8 palette for?
+
+-----------------------------------------------------------
+
+MIO0 852E20: Moo Moo Farm
+0FC70: CI8 pallette for moles to follow (0FE70-1366F)
+13870: CI8 pallete for cows in MIO0 blocks:
+  693BC4
+  693F48
+  69429C
+  694628
+  694990
+  694CAC
+  694F7C
+  695268
+  6955AC
+  6958C0
+
+-----------------------------------------------------------
+
+MIO0 8666A0: Kalimari Desert
+8380: CI8 palette for cacti stored in MIO0 blocks:
+  695BA4
+  695EE4
+  6961E0
+  696488
+  6967FC
+
+-----------------------------------------------------------
+MIO0 86ECF0: Sherbet Land
+
+68E8: IA16 32x32 ice block?
+72E8: RGBA16 32x32 yellow penguin nose
+7AE8: RGBA16 32x32 penguin eye
+
+-----------------------------------------------------------
+
+MIO0 872A00: Rainbow Road
+Neon background images
+Palette at 5C00 may be common all black palette?
+Texture   Offset  Palette(s)
+Mushroom   08000  5400 5600 5800 5A00
+Mario      09000  5E00 6000 6200 6400 6600
+Boo        0A000  6800 6A00 6C00 6E00 7000
+Peach      0B000  7200
+Luigi      0C000  7400
+D.K.       0D000  7600
+Yoshi      0E000  7800
+Bowser     0F000  7A00
+Wario      10000  7C00
+Toad       11000  7E00
+
+12028: RGBA16 32x64 Disco ball looking chain chomp?
+13028: RGBA16 32x32 Reflective chain chomp
+13828: RGBA16 32x32 gold-looking circle
+14028: RGBA16 32x32 tongue
+14828: RGBA16 32x32 eyeball
+
+-----------------------------------------------------------
+
+MIO0 8804A0: Wario sign
+8890: RGBA16 64x64 (2) Wario sign
+
+-----------------------------------------------------------
+
+MIO0 885A10: D.K.'s Jungle Parkway
+13978: CI8 palette for kiwano fruit in MIO0:
+  699E24, 69A154, 69A4C0
+
+-----------------------------------------------------------
+
+Raw ROM Textures:
+Lakitu Textures
+6A0AC0-6C02BF: (32) CI8 56x72 holding lights
+6C02C0-70EEBF: (80) CI8 72x56 waving flag/lap sign
+70EEC0-712DBF: (4)  CI8 56x72 fishing
+
+Some font and OSD characters
+7F8734-7F99F3: (10) I8 15x32 numbers
+7F99F4-7F9CF3: (6)  I8 8x16 cc " ! . 0 ~
+7F9CF4-7F9DC3: (1)  I8 13x16 not sure
+7F9DC4-7F9EC3: (2)  I8 8x16 . +
+7F9EC4-7F9FC3: (2)  I8 8x16 all FF white
+7F9FC4-7FA0C3: (2)  I8 8x16 ? '
+7FA0C4-7FA333: (3)  I8 13x16 not sure
+7FA334-7FA3B3: (1)  I8 8x16 ,
+
